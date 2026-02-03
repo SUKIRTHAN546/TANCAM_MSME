@@ -1,19 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Supply Dashboard</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="script" href="/static/js/main.js">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Dashboard - Control Tower</title>
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-    <h1>Supply Control Tower</h1>
+    <div class="app-wrapper">
+        <nav class="sidebar">
+            <div class="sidebar-header"><h2>Control Tower</h2></div>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Dashboard</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/inventory">Inventory (-)</a></li>
+                <li><a href="/wip">WIP (-)</a></li>
+            </ul>
+        </nav>
 
-    <ul>
-        <li><a href="/orders">Orders</a></li>
-        <li><a href="/inventory">Inventory</a></li>
-        <li><a href="/wip">WIP</a></li>
-    </ul>
+        <main class="content">
+            <header class="top-bar">
+                <h1>Executive Summary</h1>
+                <p>Real-time data from your active orders.</p>
+            </header>
 
-    <p>Dashboard coming tomorrow</p>
+            <section class="metrics-row">
+                <div class="card metric-card">
+                    <span class="metric-label">Total Orders</span>
+                    <h2 id="totalOrders">0</h2>
+                </div>
+                <div class="card metric-card">
+                    <span class="metric-label">Total Units Ordered</span>
+                    <h2 id="totalUnits">0</h2>
+                </div>
+                <div class="card metric-card">
+                    <span class="metric-label">Pending Status</span>
+                    <h2 id="pendingCount">0</h2>
+                </div>
+            </section>
+
+            <section class="table-container">
+                <div class="card">
+                    <h3>Original Order Log</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboardOrderList">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../static/js/main.js"></script>
 </body>
 </html>
