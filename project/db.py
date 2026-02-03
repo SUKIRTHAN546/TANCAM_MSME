@@ -1,7 +1,7 @@
 import sqlite3
 
-conn = sqlite3.connect("database.db")
-with open("schema.sql") as f:
-    conn.executescript(f.read())
-conn.commit()
-conn.close()
+def get_db():
+    conn = sqlite3.connect("database.db")
+    
+    conn.row_factory = sqlite3.Row
+    return conn
