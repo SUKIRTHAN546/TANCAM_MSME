@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders - Supply Control Tower</title>
+    <title>Order Management - Supply Control Tower</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -13,18 +13,17 @@
                 <h2>Control Tower</h2>
             </div>
             <ul class="nav-links">
+                <li><a href="/">Dashboard</a></li>
                 <li><a href="/orders" class="active">Orders</a></li>
                 <li><a href="/inventory">Inventory</a></li>
                 <li><a href="/wip">WIP</a></li>
             </ul>
-            <div class="sidebar-footer">
-                <p>MSME Portal v1.0</p>
-            </div>
         </nav>
 
         <main class="content">
             <header class="top-bar">
                 <h1>Order Management</h1>
+                <p>Add and track customer demand here.</p>
             </header>
 
             <section class="form-container">
@@ -32,18 +31,18 @@
                     <h3>Create New Order</h3>
                     <div class="input-grid">
                         <div class="input-group">
-                            <label>Item Name</label>
-                            <input id="item" type="text" placeholder="e.g. Raw Cotton">
+                            <label for="item">Item Name</label>
+                            <input id="item" type="text" placeholder="e.g. Cotton Fabric">
                         </div>
                         <div class="input-group">
-                            <label>Quantity</label>
-                            <input id="qty" type="number" placeholder="0">
+                            <label for="qty">Quantity</label>
+                            <input id="qty" type="number" placeholder="Enter amount">
                         </div>
                         <div class="input-group">
-                            <label>Expected Date</label>
+                            <label for="date">Expected Date</label>
                             <input id="date" type="date">
                         </div>
-                        <div class="input-group">
+                        <div class="input-group btn-container">
                             <button class="btn-primary" onclick="addOrder()">+ Add to Queue</button>
                         </div>
                     </div>
@@ -58,8 +57,8 @@
                             <tr>
                                 <th>Item Name</th>
                                 <th>Quantity</th>
-                                <th>Date</th>
-                                <th style="text-align: center;">Status</th>
+                                <th>Expected Date</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="orderList">
@@ -69,6 +68,7 @@
             </section>
         </main>
     </div>
+
     <script src="/static/js/main.js"></script>
 </body>
 </html>

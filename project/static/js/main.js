@@ -1,101 +1,81 @@
-function addOrder() {
-    const itemName = document.getElementById("item").value;
-    const quantity = document.getElementById("qty").value;
-    const dueDate = document.getElementById("date").value;
+// Unified function to fetch and display orders for BOTH pages
+function loadOrdersData() {
+    const dashboardTable = document.getElementById("dashboardOrderList");
+    const ordersTable = document.getElementById("orderList");
+    
+    // Determine which table we are currently looking at
+    const activeTable = dashboardTable || ordersTable;
+    if (!activeTable) return;
 
-    if (!itemName || !quantity || !dueDate) {
-        alert("Please fill in all fields.");
+    fetch("/api/orders")
+        .then(res => res.json())
+        .then(data => {
+            activeTable.innerHTML = "";
+            let unitSum = 0;
+
+            data.forEach(o => {
+                unitSum += parseInt(o.quantity) || 0;
+                
+                // Add rows with the Delete button (o.id must be sent from backend)
+                activeTable.innerHTML += `
+                    <tr>
+                        <td><strong>${o.item_name}</strong></td>
+                        <td>${o.quantity}</td>
+                        <td>${o.due_date}</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td>
+                            <button class="btn-delete" onclick="deleteOrder(${o.id})">Delete</button>
+                        </td>
+                    </tr>`;
+            });
+
+            // Update Dashboard metrics only if those elements exist
+            if (document.getElementById("totalOrders")) {
+                document.getElementById("totalOrders").innerText = data.length;
+                document.getElementById("totalUnits").innerText = unitSum;
+                document.getElementById("pendingCount").innerText = data.length;
+            }
+        })
+        .catch(err => console.error("Error loading data:", err));
+}
+
+// Function to handle adding an order
+function addOrder() {
+    const item = document.getElementById("item").value;
+    const qty = document.getElementById("qty").value;
+    const date = document.getElementById("date").value;
+
+    if(!item || !qty || !date) {
+        alert("Please fill in all fields");
         return;
     }
 
     fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            item_name: itemName,
-            quantity: quantity,
-            due_date: dueDate
-        })
+        body: JSON.stringify({ item_name: item, quantity: qty, due_date: date })
     }).then(() => {
-        // Clear inputs
-        document.getElementById("item").value = "";
-        document.getElementById("qty").value = "";
-        document.getElementById("date").value = "";
-        // Reload table
-        loadOrders();
+        window.location.reload(); 
     });
 }
 
-function loadOrders() {
-    fetch("/api/orders")
-        .then(res => res.json())
-        .then(data => {
-            const list = document.getElementById("orderList");
-            list.innerHTML = ""; // Clear existing table rows
-
-            data.forEach(o => {
-                const row = `
-                    <tr>
-                        <td><strong>${o.item_name}</strong></td>
-                        <td>${o.quantity}</td>
-                        <td>${o.due_date}</td>
-                        <td style="text-align: center;">
-                            <span class="badge status-pending">Pending</span>
-                        </td>
-                    </tr>
-                `;
-                list.innerHTML += row;
-            });
-        });
-}
-
-// Initial load
-document.addEventListener("DOMContentLoaded", loadOrders);
-
-function loadDashboardData() {
-    fetch("/api/orders")
-        .then(res => res.json())
-        .then(data => {
-            const tableBody = document.getElementById("dashboardOrderList");
-            const totalOrdersEl = document.getElementById("totalOrders");
-            const totalUnitsEl = document.getElementById("totalUnits");
-            const pendingCountEl = document.getElementById("pendingCount");
-
-            if (!tableBody) return; // Exit if not on the dashboard page
-
-            tableBody.innerHTML = "";
-            let totalUnits = 0;
-
-            data.forEach(o => {
-                // Calculate Total Units
-                totalUnits += parseInt(o.quantity) || 0;
-
-                // Create Table Row
-                const row = `
-                    <tr>
-                        <td><strong>${o.item_name}</strong></td>
-                        <td>${o.quantity}</td>
-                        <td>${o.due_date}</td>
-                        <td><span class="badge status-pending">Pending</span></td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
-
-            // Update Metric Cards
-            totalOrdersEl.innerText = data.length;
-            totalUnitsEl.innerText = totalUnits;
-            pendingCountEl.innerText = data.length; // Currently all are pending
+// Global Delete Function
+function deleteOrder(orderId) {
+    if (confirm("Are you sure you want to delete this order?")) {
+        fetch(`/api/orders/${orderId}`, {
+            method: "DELETE",
         })
-        .catch(err => console.error("Error loading dashboard:", err));
+        .then(res => {
+            if (res.ok) {
+                // Refresh the data without a full page reload
+                loadOrdersData();
+            } else {
+                alert("Server error: Check if the DELETE route exists in app.py");
+            }
+        })
+        .catch(err => console.error("Delete failed:", err));
+    }
 }
 
-// Ensure it loads on start
-document.addEventListener("DOMContentLoaded", () => {
-    loadDashboardData();
-    
-    // If you have the loadOrders function for the orders.html page, keep it here too:
-    if (document.getElementById("orderList")) {
-        loadOrders(); 
-    }
-});
+// Single entry point
+document.addEventListener("DOMContentLoaded", loadOrdersData);

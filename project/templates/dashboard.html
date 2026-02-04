@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supply Dashboard - Control Tower</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="app-wrapper">
@@ -13,15 +13,15 @@
             <ul class="nav-links">
                 <li><a href="/" class="active">Dashboard</a></li>
                 <li><a href="/orders">Orders</a></li>
-                <li><a href="/inventory">Inventory (-)</a></li>
-                <li><a href="/wip">WIP (-)</a></li>
+                <li><a href="/inventory">Inventory</a></li>
+                <li><a href="/wip">WIP</a></li>
             </ul>
         </nav>
 
         <main class="content">
             <header class="top-bar">
                 <h1>Executive Summary</h1>
-                <p>Real-time data from your active orders.</p>
+                <p>Overview of all current orders.</p>
             </header>
 
             <section class="metrics-row">
@@ -30,18 +30,18 @@
                     <h2 id="totalOrders">0</h2>
                 </div>
                 <div class="card metric-card">
-                    <span class="metric-label">Total Units Ordered</span>
+                    <span class="metric-label">Total Units</span>
                     <h2 id="totalUnits">0</h2>
                 </div>
                 <div class="card metric-card">
-                    <span class="metric-label">Pending Status</span>
+                    <span class="metric-label">Pending Items</span>
                     <h2 id="pendingCount">0</h2>
                 </div>
             </section>
 
             <section class="table-container">
                 <div class="card">
-                    <h3>Original Order Log</h3>
+                    <h3>Recent Order Log</h3>
                     <table>
                         <thead>
                             <tr>
@@ -58,6 +58,19 @@
             </section>
         </main>
     </div>
-    <script src="../static/js/main.js"></script>
+    <script src="/static/js/main.js"></script>
+
+    <table>
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Actions</th> </tr>
+    </thead>
+    <tbody id="dashboardOrderList">
+        </tbody>
+</table>
 </body>
 </html>
