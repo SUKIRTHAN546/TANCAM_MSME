@@ -1,9 +1,12 @@
 import sqlite3
 
-def get_db():
-    conn = sqlite3.connect("database.db")
+connection = sqlite3.connect('supply_chain.db')
 
-  
-    
-    conn.row_factory = sqlite3.Row
-    return conn
+with open('schema.sql') as f:
+    connection.executescript(f.read())
+
+cur = connection.cursor()
+
+print("Database initialized successfully with your schema!")
+connection.commit()
+connection.close()

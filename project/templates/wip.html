@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIP - Supply Control Tower</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <nav class="sidebar">
+            <div class="sidebar-header"><h2>Control Tower</h2></div>
+            <ul class="nav-links">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/inventory">Inventory</a></li>
+                <li><a href="/wip" class="active">WIP</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <header class="top-bar">
+                <h1>Work In Progress (WIP)</h1>
+                <p>Track items currently in production.</p>
+            </header>
+
+            <section class="form-container">
+                <div class="card">
+                    <h3>Add Production Entry</h3>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Item Name</label>
+                            <input id="wip_item" type="text" placeholder="e.g. Assembled Frame">
+                        </div>
+                        <div class="input-group">
+                            <label>Quantity in Production</label>
+                            <input id="wip_qty" type="number" placeholder="0">
+                        </div>
+                        <div class="input-group btn-container">
+                            <button class="btn-primary" style="background-color: #e67e22;" onclick="addWip()">+ Add WIP</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="table-container">
+                <div class="card">
+                    <h3>Current Production Floor</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity in Process</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wipList">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

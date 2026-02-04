@@ -23,12 +23,12 @@
         <main class="content">
             <header class="top-bar">
                 <h1>Order Management</h1>
-                <p>Add and track customer demand here.</p>
+                <p>Track customer demand and manage inputs.</p>
             </header>
 
             <section class="form-container">
                 <div class="card">
-                    <h3>Create New Order</h3>
+                    <h3>Create New Customer Order</h3>
                     <div class="input-grid">
                         <div class="input-group">
                             <label for="item">Item Name</label>
@@ -43,7 +43,7 @@
                             <input id="date" type="date">
                         </div>
                         <div class="input-group btn-container">
-                            <button class="btn-primary" onclick="addOrder()">+ Add to Queue</button>
+                            <button class="btn-primary" onclick="addOrder()">+ Add Order</button>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
 
             <section class="table-container">
                 <div class="card">
-                    <h3>Recent Orders</h3>
+                    <h3>Active Orders Queue</h3>
                     <table>
                         <thead>
                             <tr>
@@ -66,6 +66,47 @@
                     </table>
                 </div>
             </section>
+
+            <div class="input-grid" style="align-items: flex-start;">
+                
+                <div class="card" style="flex: 1;">
+                    <h3>Quick Add: Inventory</h3>
+                    <div class="input-grid" style="flex-direction: column; gap: 15px; align-items: stretch;">
+                        <div class="input-group">
+                            <label>Item Name</label>
+                            <input id="inv_item" placeholder="Item Name">
+                        </div>
+                        <div class="input-grid" style="gap: 10px;">
+                            <div class="input-group">
+                                <label>Stock</label>
+                                <input id="inv_stock" type="number" placeholder="0">
+                            </div>
+                            <div class="input-group">
+                                <label>Min Level</label>
+                                <input id="inv_min" type="number" placeholder="0">
+                            </div>
+                        </div>
+                        <button class="btn-primary" style="width: 100%" onclick="addInventory()">Update Inventory</button>
+                    </div>
+                </div>
+
+                <div class="card" style="flex: 1;">
+                    <h3>Quick Add: Work In Progress</h3>
+                    <div class="input-grid" style="flex-direction: column; gap: 15px; align-items: stretch;">
+                        <div class="input-group">
+                            <label>Item Name</label>
+                            <input id="wip_item" placeholder="Item Name">
+                        </div>
+                        <div class="input-group">
+                            <label>WIP Quantity</label>
+                            <input id="wip_qty" type="number" placeholder="0">
+                        </div>
+                        <button class="btn-primary" style="width: 100%; background-color: #e67e22;" onclick="addWip()">Update WIP</button>
+                    </div>
+                </div>
+
+            </div>
+
         </main>
     </div>
 
