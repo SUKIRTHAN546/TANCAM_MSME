@@ -79,3 +79,23 @@ function deleteOrder(orderId) {
 
 // Single entry point
 document.addEventListener("DOMContentLoaded", loadOrdersData);
+
+
+fetch("/api/status")
+  .then(res => res.json())
+  .then(data => {
+    const list = document.getElementById("statusList");
+    list.innerHTML = "";
+
+    data.forEach(i => {
+      let color =
+        i.status === "RED" ? "red" :
+        i.status === "YELLOW" ? "orange" :
+        "green";
+
+      list.innerHTML += `
+        <li style="color:${color}">
+          ${i.item} → ${i.available} (${i.status})
+        </li>`;
+    });
+  });

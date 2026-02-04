@@ -56,6 +56,55 @@ def delete_order(order_id):
 
 # --- Start the Server ---
 
+
+
+@app.route("/api/status")
+def stock_status():
+    db = get_db()
+
+    inventory = db.execute("SELECT * FROM inventory").fetchall()
+
+    orders = db.execute("""
+        SELECT item_name, SUM(quantity) AS qty
+        FROM orders
+        WHERE status='Pending'
+        GROUP BY item_name
+    """).fetchall()
+
+    wip = db.execute("""
+        SELECT item_name, SUM(wip_qty) AS qty
+        FROM wip
+        GROUP BY item_name
+    """).fetchall()
+
+    order_map = {o["item_name"]: o["qty"] for o in orders}
+    wip_map = {w["item_name"]: w["qty"] for w in wip}
+
+    result = []
+
+    for i in inventory:
+        available = (
+            i["stock_qty"]
+            + wip_map.get(i["item_name"], 0)
+            - order_map.get(i["item_name"], 0)
+        )
+
+        if available < 0:
+            status = "RED"
+        elif available < i["min_level"]:
+            status = "YELLOW"
+        else:
+            status = "GREEN"
+
+        result.append({
+            "item": i["item_name"],
+            "available": available,
+            "status": status
+        })
+
+    return jsonify(result)
+    
+
 if __name__ == "__main__":
     # app.run should ALWAYS be at the very bottom of the file
     app.run(debug=True)
